@@ -8,11 +8,23 @@ const app = express();
 
 const PORT = 3000;
 
-const server = http.createServer(app);
 
 const mongoose = require("mongoose");
 
 mongoose.Promise = global.Promise;
+
+const listElementRouter = require("./src/routes/list-element");
+
+app.use("/list-elements", listElementRouter);
+
+app.use("*", (req, res) => {
+    return res.status(404).json({
+        status : 404,
+        message : "Resource not found"
+    });
+});
+
+const server = http.createServer(app);
 
 server.listen(PORT, err => {
     if (err) {

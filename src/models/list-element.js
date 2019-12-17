@@ -13,6 +13,9 @@ const ListElementSchema = Schema({
     prop2 : Number,
     prop3 : Number,
     prop4 : String
+},
+{
+    timestamps : true
 });
 
 // const ListElement = mongoose.model("ListElement", ListElementSchema);

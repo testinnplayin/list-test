@@ -11,13 +11,12 @@ const ListElementSchema = Schema({
     },
     prop1 : String,
     prop2 : Number,
-    prop3 : Boolean,
+    prop3 : Number,
     prop4 : String
 });
 
-const ListElement = mongoose.model("ListElement", ListElementSchema);
+// const ListElement = mongoose.model("ListElement", ListElementSchema);
 
 module.exports = {
-    ListElement,
     ListElementSchema
 };

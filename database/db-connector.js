@@ -2,7 +2,7 @@
 
 const mongoose = require("mongoose");
 
-const LOCAL_HOST = "127.0.0.1:27017/list-test";
+const LOCAL_HOST = "mongodb://127.0.0.1:27017/list-test";
 
 module.exports = {
     openDBConnection () {

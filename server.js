@@ -10,9 +10,13 @@ const PORT = 3000;
 
 const server = http.createServer(app);
 
+const mongoose = require("mongoose");
+
+mongoose.Promise = global.Promise;
+
 server.listen(PORT, err => {
     if (err) {
-        throw new Error(`Problem while starting server ${err}`);
+        console.error(`[ERROR] There has been a problem while starting up server: ${err}`);
     }
     console.log(`---- Server listening on port ${PORT} ----`);
 });

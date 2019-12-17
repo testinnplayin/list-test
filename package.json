@@ -1,0 +1,21 @@
+{
+  "name": "list-test",
+  "version": "1.0.0",
+  "description": "a test of how best to handle lots of documents in lists",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "test",
+    "list",
+    "node",
+    "vue"
+  ],
+  "author": "R.Wood",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.8.1"
+  }
+}

@@ -13,7 +13,7 @@ router.get("/", listElementController.getNormal);
 router.get("/pages");
 
 // the stream version
-router.get("/stream");
+router.get("/stream", listElementController.getStream);
 
 router.use((err, req, res, next) => {
     const errStatus = req.errStatus;

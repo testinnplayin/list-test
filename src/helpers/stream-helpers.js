@@ -9,7 +9,7 @@ module.exports = {
         if (arrLng > 0) {
             console.log("streaming new chunk");
             let chunkToSend = JSON.stringify(arrOfData.slice(0, DOC_CAP));
-            chunkToSend += ", ";
+            chunkToSend += ":::";
             console.log(chunkToSend);
             res.write(chunkToSend);
             

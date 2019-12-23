@@ -15,6 +15,7 @@ module.exports = {
         return mongoose.createConnection(LOCAL_HOST, options);
     },
     closeDBConnection (conn) {
+        console.log('Database connection closed');
         return conn.close();
     }
 };

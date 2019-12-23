@@ -9,6 +9,10 @@ const ListElementSchema = Schema({
         type : String,
         required : true
     },
+    is_active : {
+        type : Boolean,
+        default : true
+    },
     prop1 : String,
     prop2 : Number,
     prop3 : Number,

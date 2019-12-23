@@ -64,8 +64,24 @@ module.exports = {
                 streamHelpers.chunkArrayOfData(listElements, res);
             })
             // NOTE: this will run before streaming has finished but should not normally be a problem
-            .then(() => {
-                return dbConnector.closeDBConnection(conn);
+            .then(() => dbConnector.closeDBConnection(conn))
+            .catch(next);
+    },
+    getNormalPagination (req, res, next) {
+        let conn;
+
+        dbConnector.openDBConnection()
+            .then(c => {
+                if (!c) {
+                    req.errStatus = 404;
+                    throw new Error(errMsgs.dbErr);
+                }
+
+                conn = c;
+
+                const ListElement = conn.model('ListElement', ListElementSchema);
+
+                return ListElement.find({})
             })
             .catch(next);
     }

@@ -10,7 +10,7 @@ const listElementController = require("../controllers/list-element-controller");
 router.get("/", listElementController.getNormal);
 
 // pagination method
-router.get("/pages");
+router.get("/pages", listElementController.getNormalPagination);
 
 // the stream version
 router.get("/stream", listElementController.getStream);

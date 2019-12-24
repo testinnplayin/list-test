@@ -22,8 +22,6 @@ const ListElementSchema = Schema({
     timestamps : true
 });
 
-// const ListElement = mongoose.model("ListElement", ListElementSchema);
-
 module.exports = {
     ListElementSchema
 };

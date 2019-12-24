@@ -10,7 +10,7 @@ module.exports = {
             console.log("streaming new chunk");
             let chunkToSend = JSON.stringify(arrOfData.slice(0, DOC_CAP));
             chunkToSend += ":::";
-            console.log(chunkToSend);
+            // console.log(chunkToSend);
             res.write(chunkToSend);
             
             const newDataArr = arrOfData.slice(DOC_CAP, arrLng);

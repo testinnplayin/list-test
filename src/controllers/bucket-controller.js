@@ -50,7 +50,7 @@ module.exports = {
             .catch(next);
     },
     turnOffListElement (req, res, next) {
-        let conn;
+        let conn, updatedBucket;
 
         let Bucket;
 
@@ -71,7 +71,19 @@ module.exports = {
                 return Bucket.findOneAndUpdate({ _id : ObjectId(result._id) }, { $set : result }, { new : true });
             })
             .then(result => {
+
+                updatedBucket = result;
+
                 return res.status(200).json({ updated_bucket : result });
+            })
+            .then(() => {
+                // NOTE: following emulates inactivation of all workflows (in this case list elements) affiliated with a bucket
+                const activeElements = updatedBucket.list_elements.filter(el => el.is_active);
+                const lng = activeElements.length;
+
+                if (lng === 0) {
+                    return Bucket.findOneAndUpdate({ _id : updatedBucket._id }, { $set : { deleted : true } });
+                }
             })
             .then(() => dbConnector.closeDBConnection(conn))
             .catch(next);

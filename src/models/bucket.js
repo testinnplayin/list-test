@@ -16,6 +16,10 @@ const BucketSchema = Schema({
         required : true,
         default : 0
     },
+    deleted : {
+        type : Boolean,
+        default : false
+    },
     list_elements : [
         {
             _id : mongoose.Types.ObjectId,

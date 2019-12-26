@@ -19,7 +19,7 @@ router.get("/:bucket", bucketController.getBucket);
 router.put("/:bucketId/list-element/:listElementId", bucketController.turnOffListElement);
 
 router.use((err, req, res, next) => {
-    const errStatus = req.errStatus;
+    let errStatus = req.errStatus;
 
     console.error(`[ERROR] ${req.method} at ${req.url}: ${err}`);
 

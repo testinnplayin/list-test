@@ -14,6 +14,8 @@ router.get(
     bucketController.getBuckets
 );
 
+router.get("/:bucket", bucketController.getBucket);
+
 router.use((err, req, res, next) => {
     const errStatus = req.errStatus;
 

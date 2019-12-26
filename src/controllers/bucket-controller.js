@@ -60,7 +60,7 @@ module.exports = {
 
                 Bucket = conn.model("Bucket", BucketSchema);
 
-                return Bucket.findOne({ "list_elements._id" : req.params.listElementId }).lean();
+                return Bucket.findOne({ _id : req.params.bucketId }).lean();
             })
             .then(result => {
                 let listElements = result.list_elements;

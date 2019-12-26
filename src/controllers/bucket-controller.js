@@ -44,15 +44,13 @@ module.exports = {
                 return Bucket.findOne({ compound_id : req.params.bucket });
             })
             .then(result => {
-                return res.status(200).json({ bucket : result });
+                return res.status(200).json({ list_elements : result.sendListElements() });
             })
             .then(() => dbConnector.closeDBConnection(conn))
             .catch(next);
     },
     turnOffListElement (req, res, next) {
-        let conn, updatedBucket;
-
-        let Bucket;
+        let conn, updatedBucket, Bucket;
 
         dbConnector.openDBConnection()
             .then(c => {

@@ -44,4 +44,8 @@ const BucketSchema = Schema({
     timestamps : true
 });
 
+BucketSchema.methods.sendListElements = function () {
+    return this.list_elements;
+};
+
 module.exports = { BucketSchema };

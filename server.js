@@ -21,10 +21,12 @@ const mongoose = require("mongoose");
 
 mongoose.Promise = global.Promise;
 
+const bucketRouter = require("./src/routes/bucket-router");
 const listElementRouter = require("./src/routes/list-element");
 
 app.use(cors(corsOptions));
 
+app.use("/buckets", bucketRouter);
 app.use("/list-elements", listElementRouter);
 
 app.use("*", (req, res) => {

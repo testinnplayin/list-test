@@ -25,7 +25,7 @@ module.exports = {
 
                 const ListElement = conn.model("ListElement", ListElementSchema);
 
-                return ListElement.find().lean();
+                return ListElement.find({ is_active : true }).lean();
             })
             .then(lElements => {
                 if (!lElements) {
@@ -64,9 +64,58 @@ module.exports = {
                 streamHelpers.chunkArrayOfData(listElements, res);
             })
             // NOTE: this will run before streaming has finished but should not normally be a problem
-            .then(() => {
-                return dbConnector.closeDBConnection(conn);
+            .then(() => dbConnector.closeDBConnection(conn))
+            .catch(next);
+    },
+    // this is the 'normal' pagination call i.e. no bucket
+    // however, it does not use skipping as in classic pagination; instead it uses an inferior date limit
+    // it returns a list of 20 documents in descending creation date order that are active
+    getNormalPagination (req, res, next) {
+        const userQuery = req.query;
+        let uQueryProps = [];
+
+        // we want to have the number of properties inside the query in case it is not set in the client and returns an empty object
+        if (userQuery) {
+            uQueryProps = Object.keys(userQuery);
+        }
+
+        let dbQuery;
+
+        // if the query isn't set or does not exist, then just query on active state
+        // if on the other hand the query exists, then add a check on the createdAt field with most recent first (so each subsequent query is in descending order)
+        dbQuery = { is_active : true };
+
+        if (uQueryProps.length > 0) {
+            // generate a new ISODate() object from the date string; we need this for querying MongoDB based on date
+            const dateObj = new Date(userQuery.date);
+
+            if (!dateObj) {
+                req.errStatus = 400;
+                throw new Error("pagination query badly-formed");
+            }
+
+            dbQuery.createdAt = { $lte :  dateObj };
+        }
+        
+        let conn;
+
+        dbConnector.openDBConnection()
+            .then(c => {
+                if (!c) {
+                    req.errStatus = 404;
+                    throw new Error(errMsgs.dbErr);
+                }
+
+                conn = c;
+
+                const ListElement = conn.model('ListElement', ListElementSchema);
+
+                return ListElement.find(dbQuery).sort({ createdAt : -1 }).lean().limit(30);
             })
+            .then(results => {
+                return res.status(200).json({ list_elements : results });
+            })
+            .then(() => dbConnector.closeDBConnection(conn))
             .catch(next);
     }
 };

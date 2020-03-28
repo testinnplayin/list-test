@@ -9,6 +9,10 @@ const ListElementSchema = Schema({
         type : String,
         required : true
     },
+    is_active : {
+        type : Boolean,
+        default : true
+    },
     prop1 : String,
     prop2 : Number,
     prop3 : Number,
@@ -17,8 +21,6 @@ const ListElementSchema = Schema({
 {
     timestamps : true
 });
-
-// const ListElement = mongoose.model("ListElement", ListElementSchema);
 
 module.exports = {
     ListElementSchema

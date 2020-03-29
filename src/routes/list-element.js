@@ -9,6 +9,8 @@ const listElementController = require("../controllers/list-element-controller");
 // basic, traditional get all route
 router.get("/", listElementController.getNormal);
 
+router.get('/trad-page', listElementController.getPage);
+
 // pagination method
 router.get("/pages", listElementController.getNormalPagination);
 

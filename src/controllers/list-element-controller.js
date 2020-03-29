@@ -69,7 +69,7 @@ module.exports = {
     },
     // this is the 'normal' pagination call i.e. no bucket
     // however, it does not use skipping as in classic pagination; instead it uses an inferior date limit
-    // it returns a list of 20 documents in descending creation date order that are active
+    // it returns a list of 30 documents in descending creation date order that are active
     getNormalPagination (req, res, next) {
         const userQuery = req.query;
         let uQueryProps = [];
@@ -107,15 +107,53 @@ module.exports = {
                 }
 
                 conn = c;
-
+                console.log("start of request ", new Date());
                 const ListElement = conn.model('ListElement', ListElementSchema);
 
-                return ListElement.find(dbQuery).sort({ createdAt : -1 }).lean().limit(30);
+                return ListElement
+                    .find(dbQuery)
+                    .sort({ createdAt : -1 })
+                    .limit(20)
+                    .lean();
+                    // .setOptions({ explain : "executionStats" });
             })
             .then(results => {
+                console.log("end of request ", new Date());
                 return res.status(200).json({ list_elements : results });
             })
             .then(() => dbConnector.closeDBConnection(conn))
             .catch(next);
-    }
+    },
+    getPage (req, res, next) {
+        const userQuery = req.query;
+        let page, elementsPerPage;
+
+        (userQuery.page) ? page = Number.parseInt(userQuery.page) : page = 1;
+        (userQuery.limit)
+            ? elementsPerPage = Number.parseInt(userQuery.limit)
+            : elementsPerPage = 10;
+
+        let conn;
+
+        dbConnector.openDBConnection()
+            .then(c => {
+                conn = c;
+                console.log("start of request ", new Date());
+                const ListElement = conn.model('ListElement', ListElementSchema);
+                
+                return ListElement
+                    .find({ is_active : true })
+                    .skip(page)
+                    .sort({ createdAt : -1 })
+                    .limit(elementsPerPage)
+                    // .setOptions({ explain : "executionStats" });
+                    .lean();
+            })
+            .then(results => {
+                console.log("end of request ", new Date());
+                return res.status(200).json({ list_elements : results });
+            })
+            .then(() => dbConnector.closeDBConnection(conn))
+            .catch(next);
+    },
 };

@@ -16,7 +16,12 @@ const ListElementSchema = Schema({
     prop1 : String,
     prop2 : Number,
     prop3 : Number,
-    prop4 : String
+    prop4 : String,
+    created_at : {
+        type : Date,
+        default : Date.now,
+        index : true
+    }
 },
 {
     timestamps : true

@@ -16,7 +16,7 @@ module.exports = {
             const newDataArr = arrOfData.slice(DOC_CAP, arrLng);
             this.chunkArrayOfData(newDataArr, res);
         } else {
-            console.log("streaming coming to an end");
+            console.log("streaming coming to an end ", new Date());
             return res.end();
         }
     }

@@ -41,10 +41,13 @@ module.exports = {
 
                 const Bucket = conn.model("Bucket", BucketSchema);
 
-                return Bucket.findOne({ compound_id : req.params.bucket });
+                return Bucket
+                    .findOne({ compound_id : req.params.bucket })
+                    .setOptions({ explain : "executionStats" });
             })
             .then(result => {
-                return res.status(200).json({ list_elements : result.sendListElements() });
+                return res.status(200).json({ list_elements : result });
+                // return res.status(200).json({ list_elements : result.sendListElements() });
             })
             .then(() => dbConnector.closeDBConnection(conn))
             .catch(next);

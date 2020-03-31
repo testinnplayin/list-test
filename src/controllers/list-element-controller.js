@@ -48,7 +48,7 @@ module.exports = {
                 }
 
                 conn = c;
-
+                console.log("start of request ", new Date());
                 const ListElement = conn.model("ListElement", ListElementSchema);
 
                 return ListElement.find().lean();
@@ -94,7 +94,7 @@ module.exports = {
                 throw new Error("pagination query badly-formed");
             }
 
-            dbQuery.createdAt = { $lte :  dateObj };
+            dbQuery.created_at = { $lte :  dateObj };
         }
         
         let conn;
@@ -114,8 +114,8 @@ module.exports = {
                     .find(dbQuery)
                     .sort({ createdAt : -1 })
                     .limit(20)
-                    .lean();
-                    // .setOptions({ explain : "executionStats" });
+                    // .lean();
+                    .setOptions({ explain : "executionStats" });
             })
             .then(results => {
                 console.log("end of request ", new Date());
@@ -146,8 +146,8 @@ module.exports = {
                     .skip(page)
                     .sort({ createdAt : -1 })
                     .limit(elementsPerPage)
-                    // .setOptions({ explain : "executionStats" });
-                    .lean();
+                    .setOptions({ explain : "executionStats" });
+                    // .lean();
             })
             .then(results => {
                 console.log("end of request ", new Date());
